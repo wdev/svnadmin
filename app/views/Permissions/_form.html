@@ -1,0 +1,78 @@
+#{set title: 'Permissions' /}
+
+#{include 'errors/_generic.html' /}
+
+<div style="float:left; height:190px; width:350px; margin-right:50px; border-right:1px dotted silver">
+	<p>
+	    <label>Group</label><br>
+	    <select name="permission.group.id" class="chzn-select">
+	        %{ models.Group.all().fetch().sort{ it.toString() }.each() { }%
+	            %{ 
+	                selected = false;
+	                permission?.group.each() { f ->
+	                    if (f.id == it?.id)
+	                        selected = true;
+	                }
+	            }%
+	            <option value="${it?.id}" ${selected ? 'selected'.raw() : ''}>${it}</option>
+	            %{ }
+	        }%
+	    </select>
+	    <!-- <span class="note error">${errors.forKey('user.group')}</span> -->
+	</p>
+	
+	<p>
+	    <label>Repository</label><br>
+	    <select name="permission.repository.id" class="chzn-select">
+	        %{ models.Repository.all().fetch().sort{ it.toString() }.each() { }%
+	            %{ 
+	                selected = false;
+	                permission?.repository.each() { f ->
+	                    if (f.id == it?.id)
+	                        selected = true;
+	                }
+	            }%
+	            <option value="${it?.id}" ${selected ? 'selected'.raw() : ''}>${it}</option>
+	            %{ }
+	        }%
+	    </select>
+	     <!-- <span class="note error">${errors.forKey('user.repository')}</span> -->
+	</p>
+</div>
+
+<div style="float:left">
+	<p>
+	    <label>Permission to /</label><br>
+	    <select name="permission.root" class="styled">
+	       <option value="" #{if permission?.root == '' }selected="true"#{/if}>Not defined</option>
+	       <option value="r" #{if permission?.root == 'r' }selected="true"#{/if}>Readonly (r)</option>
+	       <option value="rw" #{if permission?.root == 'rw' }selected="true"#{/if}>Read/Write (rw)</option>
+	    </select>
+	</p>
+	
+	<p>
+	    <label>Permission to /trunk</label><br>
+	    <select name="permission.trunk" class="styled">
+	       <option value="" #{if permission?.trunk == '' }selected="true"#{/if}>Not defined</option>
+	       <option value="r" #{if permission?.trunk == 'r' }selected="true"#{/if}>Readonly (r)</option>
+	       <option value="rw" #{if permission?.trunk == 'rw' }selected="true"#{/if}>Read/Write (rw)</option>
+	    </select>
+	</p>
+	
+	<p>
+	    <label>Permission to /branches</label><br>
+	    <select name="permission.branches" class="styled">
+	       <option value="" #{if permission?.branches == '' }selected="true"#{/if}>Not defined</option>
+	       <option value="r" #{if permission?.branches == 'r' }selected="true"#{/if}>Readonly (r)</option>
+	       <option value="rw" #{if permission?.branches == 'rw' }selected="true"#{/if}>Read/Write (rw)</option>
+	    </select>
+	</p>
+</div>
+
+<div style="clear:both"></div>
+
+<input type="hidden" name="permission.id" value="${permission?.id}"/>
+
+<hr>
+
+

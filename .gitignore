@@ -1,0 +1,15 @@
+*~
+*.class
+*.log
+*.war
+*.ear
+*.project
+.nbproject
+.classpath
+.settings
+.svn
+logs
+precompiled
+test-results
+eclipse
+target

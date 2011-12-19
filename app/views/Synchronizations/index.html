@@ -1,0 +1,41 @@
+#{extends 'main.html' /}
+
+#{include 'Synchronizations/create.html' /}
+
+<div class="block">
+    <div class="block_head">
+        <div class="bheadl"></div>
+        <div class="bheadr"></div>
+        <h2>Old Synchronizations</h2>
+    </div>
+
+    <div class="block_content">
+      #{if synchronizations }
+        <table cellpadding="0" cellspacing="0" width="100%" class="sortable">
+            <thead>
+                <tr>
+                    <th class="header" width="10" class="header" style="cursor: pointer;">ID</th>
+                    <th class="header" style="cursor: pointer;">Date</th>
+                    <th width="100"></th>
+                </tr>
+            </thead>
+            <tbody>
+                #{list items:synchronizations, as:'synchronization'}
+                    <tr>
+                       <td>${synchronization?.id}</td>
+                       <td>${synchronization?.date}</td>
+                       <td style="text-align:right">
+                           <a href="@{Synchronizations.show(synchronization?.id)}">Details</a>&nbsp;
+                       </td>
+                    </tr>
+                #{/list}
+            </tbody>
+        </table>
+      #{/if}
+      #{else}
+          No data inserted.
+      #{/else}  
+    </div>
+    <div class="bendl"></div>
+    <div class="bendr"></div>
+</div>

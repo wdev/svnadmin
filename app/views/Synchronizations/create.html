@@ -1,0 +1,32 @@
+#{extends 'main.html' /}
+
+#{set title: 'Synchronizations' /}
+
+<div class="block">
+    <div class="block_head">
+        <div class="bheadl"></div>
+        <div class="bheadr"></div>
+        <h2>New Synchronization</h2>
+    </div>
+
+    <div class="block_content">
+        #{include 'errors/_generic.html' /}
+        
+        #{form @Synchronizations.save(), id:'createForm'}
+            <p>
+			    <label>Configuration</label><br>
+			    <textarea readonly="readonly" rows="10">${configuration}</textarea>
+			<span class="note error">The synchronization is the final step. You only need to do it after add all permissions.</span>
+			</p>
+			
+
+            <hr>
+            
+            <input type="submit" name="submit" value="Save" class="submit small">
+            <input type="button" name="cancel" value="Cancel" class="submit small" onclick="window.location.href='@{Synchronizations.index}'">
+            <br><br>
+        #{/form}
+    </div>
+    <div class="bendl"></div>
+    <div class="bendr"></div>
+</div>

@@ -1,0 +1,10 @@
+#{if flash.success }
+<div class="message success" style="display: block;">
+    <p>Success!</p>
+</div>
+#{/if}
+#{elseif flash.error }
+<div class="message errormsg" style="display: block;">
+    <p>Error! ${flash.error}</p>
+</div>
+#{/elseif}

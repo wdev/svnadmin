@@ -1,0 +1,26 @@
+#{extends 'main.html' /}
+
+<div class="block">
+    <div class="block_head">
+        <div class="bheadl"></div>
+        <div class="bheadr"></div>
+        <h2>Edit User</h2>
+    </div>
+
+    <div class="block_content2">
+        #{form @Users.update(), id:'createForm'}
+            #{include 'Users/_form.html' /}
+            <div style="float:left">
+                <input type="submit" name="submit" value="Salvar" class="submit small">
+                <input type="button" name="cancel" value="Cancelar" class="submit small" onclick="window.location.href='@{Groups.index}'">
+            </div>
+            <div style="float:right">
+                <input type="button" name="delete" value="Delete" class="submit small" onclick="if (confirm('Are you sure you want to delete this record?')) window.location.href='@{Users.delete(user.id)}';">
+            </div>
+            <div style="clear:both"></div>
+            <br>
+        #{/form}
+    </div>
+    <div class="bendl"></div>
+    <div class="bendr"></div>
+</div>

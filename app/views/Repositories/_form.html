@@ -1,0 +1,50 @@
+#{set title: 'Repositories' /}
+
+#{include 'errors/_generic.html' /}
+
+<p>
+    <label>Name</label><br>
+    <input type="text" name="repository.name" value="${repository?.name}" class="text small">
+    <span class="note error">${errors.forKey('repository.name')}</span>
+</p>
+
+<p>
+    <label>Category</label><br>
+    <select name="repository.category" class="styled">
+       <option value="BSAD2" #{if repository?.category == 'BSAD2' }selected="true"#{/if}>BSAD2</option>
+       <option value="BSAD3" #{if repository?.category == 'BSAD3' }selected="true"#{/if}>BSAD3</option>
+       <option value="OTHER" #{if repository?.category == 'OTHER' }selected="true"#{/if}>Other</option>
+    </select>
+    <span class="note">* BSAD2 creates a ejbClient directory</span>
+    <span class="note error">${errors.forKey('repository.category')}</span>
+</p>
+
+
+<input type="hidden" name="repository.id" value="${repository?.id}"/>
+
+<hr>
+
+*{
+ <div class="row">
+    <div class="label">Grupos com acesso no /</div>
+    <div class="field">
+        <select name="repository.rootGroups.id" multiple>
+            %{ models.User.all().fetch().sort{ it.toString() }.each() { }%
+                %{ 
+                    selected = false;
+                    repository?.rootGroups.each() { f ->
+                        if (f.id == it?.id)
+                            selected = true;
+                    }
+                }%
+                <option value="${it?.id}" ${selected ? 'selected'.raw() : ''}>${it}</option>
+                %{ }
+            }%
+        </select>
+    </div>
+    <span class="error">${errors.forKey('repository.rootGroups')}</span>
+</div>
+}*
+
+
+

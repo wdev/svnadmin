@@ -1,0 +1,20 @@
+#{extends 'main.html' /}
+
+<div class="block">
+    <div class="block_head">
+        <div class="bheadl"></div>
+        <div class="bheadr"></div>
+        <h2>New Permission</h2>
+    </div>
+
+    <div class="block_content2">
+        #{form @Permissions.save(), id:'createForm'}
+            #{include 'Permissions/_form.html' /}
+            <input type="submit" name="submit" value="Save" class="submit small">
+            <input type="button" name="cancel" value="Cancel" class="submit small" onclick="window.location.href='@{Permissions.index}'">
+            <br><br>
+        #{/form}
+    </div>
+    <div class="bendl"></div>
+    <div class="bendr"></div>
+</div>

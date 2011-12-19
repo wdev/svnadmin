@@ -1,0 +1,29 @@
+#{extends 'main.html' /}
+
+<div class="block">
+    <div class="block_head">
+        <div class="bheadl"></div>
+        <div class="bheadr"></div>
+        <h2>New Group</h2>
+    </div>
+
+    <div class="block_content2">
+        #{form @Groups.save(), id:'createForm'}
+            #{include 'Groups/_form.html' /}
+            
+            <p>
+                <label>Users</label><br>
+                <input type="text" name="group.logins" value="${group?.logins}" class="text small">
+                <span class="note">Enter users separated by comma (,)</span>
+                <span class="note error">${errors.forKey('users')}</span>
+            </p>
+            
+            <hr>
+            <input type="submit" name="submit" value="Save" class="submit small">
+            <input type="button" name="cancel" value="Cancel" class="submit small" onclick="window.location.href='@{Groups.index}'">
+            <br><br>
+        #{/form}
+    </div>
+    <div class="bendl"></div>
+    <div class="bendr"></div>
+</div>

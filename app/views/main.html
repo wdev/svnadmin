@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   
+    <link rel="stylesheet" media="all" href="@{'/public/stylesheets/style.css'}">
+    <link rel="stylesheet" media="all" href="@{'/public/stylesheets/jquery.wysiwyg.css'}">
+    <link rel="stylesheet" media="all" href="@{'/public/stylesheets/facebox.css'}">
+    <link rel="stylesheet" media="all" href="@{'/public/stylesheets/visualize.css'}">
+    <link rel="stylesheet" media="all" href="@{'/public/stylesheets/date_input.css'}">
+    <link rel="stylesheet" media="all" href="@{'/public/stylesheets/datatable.css'}">
+    <link rel="stylesheet" media="all" href="@{'/public/stylesheets/chosen/chosen.css'}">
+    
+    <script type="text/javascript" src="@{'/public/javascripts/jquery-1.5.2.min.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.img.preload.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.filestyle.mini.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.wysiwyg.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.date_input.pack.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/facebox.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.visualize.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.visualize.tooltip.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.select_skin.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.tablesorter.min.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/ajaxupload.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.pngfix.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/custom.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/jquery.dataTables.js'}"></script>
+    <script type="text/javascript" src="@{'/public/javascripts/chosen/chosen.jquery.min.js'}"></script>
+
+    <script type="text/javascript">
+	    $(document).ready(function() {
+	        $('.sortable').dataTable({
+	            "sPaginationType": "full_numbers"
+	        });
+	    } );
+    </script>
+        
+    #{get 'myscripts' /}
+    
+    
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" media="all" href="@{'/public/stylesheets/ie.css'}">
+    <![endif]-->
+    
+    <title>SVNADMIN</title>
+</head>
+
+<body>
+    <div id="hld">
+        <div class="wrapper">       <!-- wrapper begins -->
+            <div id="header">
+                
+                <h1><a href="/">SvnAdmin</a></h1>
+                
+                <ul id="nav">
+                    <li #{if title == 'Repositories'}class="active"#{/}>#{a @Repositories.index() }1. Repositories#{/a}</li>
+                    <li #{if title == 'Groups'}class="active"#{/}>#{a @Groups.index() }2. Groups#{/a}</li>
+                    <li #{if title == 'Permissions'}class="active"#{/}>#{a @Permissions.index() }3. Permissions#{/a}</li>
+                    <li #{if title == 'Synchronizations'}class="active"#{/}>#{a @Synchronizations.index() }4. Synchronizations#{/a}</li>
+                </ul>
+                
+                <ul id="nav2">
+                    <li #{if title == 'Importers'}class="active"#{/}>#{a @Importers.index() }Imports#{/a}</li>
+                </ul>
+
+            </div> <!-- #header ends -->
+            <center>
+                #{doLayout /}
+            </center>
+            
+        </div> <!-- wrapper ends -->
+        
+    </div> <!-- #hld ends -->
+    
+    <script type="text/javascript">
+        $(".chzn-select").chosen({allow_single_deselect: true});
+    </script>
+    
+</body>
+</html>

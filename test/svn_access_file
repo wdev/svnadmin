@@ -1,0 +1,11 @@
+[groups]
+bsad_framework=L4343435
+paol_admin=L909090,L4343435
+[bsad_framework:/]
+@bsad_framework=r
+[bsad_framework:/trunk]
+@bsad_framework=rw
+[paol_admin:/]
+@paol_admin=r
+[paol_admin:/trunk]
+@paol_admin=rw

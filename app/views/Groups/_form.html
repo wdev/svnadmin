@@ -1,0 +1,11 @@
+#{set title: 'Groups' /}
+
+#{include 'errors/_generic.html' /}
+
+ <p>
+    <label>Name</label><br>
+    <input type="text" name="group.name" value="${group?.name}" class="text small">
+    <span class="note error">${errors.forKey('group.name')}</span>
+</p>
+
+<input type="hidden" name="group.id" value="${group?.id}"/>

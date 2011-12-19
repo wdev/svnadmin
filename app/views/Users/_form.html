@@ -1,0 +1,20 @@
+#{set title: 'Users' /}
+
+#{include 'errors/_generic.html' /}
+
+<p>
+    <label>Login</label><br>
+    <input type="text" name="user.login" value="${user?.login}" class="text small">
+    <span class="note error">${errors.forKey('user.login')}</span>
+</p>
+
+<p>
+    <label>Name</label><br>
+    <input type="text" name="user.name" value="${user?.name}" class="text small">
+    <span class="note error">${errors.forKey('user.name')}</span>
+</p>
+
+<input type="hidden" name="user.id" value="${user?.id}"/>
+
+<hr>
+

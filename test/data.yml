@@ -1,0 +1,95 @@
+User(ipsadmin):
+    login: ipsadmin
+
+User(L568431):
+    login: L568431
+
+User(L966258):
+    login: L966258
+
+User(L966259):
+    login: L966259
+
+User(L568478):
+    login: L568478
+
+User(L791238):
+    login: L791238
+
+User(F199607):
+    login: F199607
+
+User(L791238):
+    login: L791238
+
+Group(admin):
+    name: admin
+    users: ipsadmin
+
+Group(paol_admin):
+    name: paol_admin
+    users: [L568431, L966258]
+
+Group(inet_kitdigitalauto):
+    name: inet_kitdigitalauto
+    users: [L966259, L568478]
+
+Group(gsin_gestaodesinistros):
+    name: gsin_gestaodesinistros
+    users: [L966259, L568431]
+
+Group(lexw_infraestrutura):
+    name: lexw_infraestrutura
+    users: F199607
+
+Group(lexw_infraestrutura_branches):
+    name: lexw_infraestrutura_branches
+    users: L791238
+
+Group(suport):
+    name: suport
+    users:
+
+Repository(root):
+    name: /
+
+Repository(paol_admin_repos):
+    name: paol_admin
+
+Repository(inet_kitdigitalauto_repos):
+    name: inet_kitdigitalauto
+
+Repository(gsin_gestaodesinistros_repos):
+    name: gsin_gestaodesinistros
+
+Repository(lexw_infraestrutura_repos):
+    name: lexw_infraestrutura
+
+Permission(p1):
+    group: admin
+    repository: root
+    root: rw
+    trunk:
+    branches:
+
+Permission(p2):
+    group: paol_admin
+    repository: paol_admin_repos
+    root: r
+    trunk: rw
+    branches:
+
+Permission(p3):
+    group: lexw_infraestrutura_branches
+    repository: lexw_infraestrutura_repos
+    root:
+    trunk:
+    branches: r
+
+Permission(p4):
+    group: suport
+    repository: paol_admin_repos
+    root: r
+    trunk: rw
+    branches:
+

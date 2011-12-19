@@ -1,0 +1,30 @@
+#{extends 'main.html' /}
+
+#{set title: 'Importers' /}
+
+<div class="block">
+    <div class="block_head">
+        <div class="bheadl"></div>
+        <div class="bheadr"></div>
+        <h2>New Import</h2>
+    </div>
+
+    <div class="block_content">
+        #{include 'errors/_generic.html' /}
+        
+        #{form @Importers.save(), id:'createForm'}
+            <p>
+			    <label>Configuration</label><br>
+			    <textarea name="importer.configuration" rows="20"></textarea>
+			</p>
+
+            <hr>
+            
+            <input type="submit" name="submit" value="Save" class="submit small" onclick="if (!confirm('Are you sure you want to save this configuration?')) return false;">
+            <input type="button" name="cancel" value="Cancel" class="submit small" onclick="window.location.href='@{Importers.index}'">
+            <br><br>
+        #{/form}
+    </div>
+    <div class="bendl"></div>
+    <div class="bendr"></div>
+</div>

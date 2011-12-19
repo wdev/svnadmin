@@ -1,0 +1,37 @@
+#{extends 'main.html' /}
+
+#{set title: 'Importers' /}
+
+<div class="block">
+    <div class="block_head">
+        <div class="bheadl"></div>
+        <div class="bheadr"></div>
+        #{if importer }
+        <h2>Import #${importer?.id} in ${importer?.date}</h2>
+        #{/if}
+        #{else}
+        <h2>Import</h2>
+        #{/else}
+    </div>
+
+    <div class="block_content">
+        #{if importer }
+        <form>
+            <p>
+                <label>Configuration</label><br>
+                <textarea readonly="readonly" rows="10">${importer?.configuration}</textarea>
+            </p>
+
+            <hr>
+            
+            <input type="button" name="cancel" value="Back" class="submit small" onclick="window.location.href='@{Importers.index}'">
+            <br><br>
+        </form>
+        #{/if}
+        #{else}
+            No importer found.
+        #{/else}
+    </div>
+    <div class="bendl"></div>
+    <div class="bendr"></div>
+</div>

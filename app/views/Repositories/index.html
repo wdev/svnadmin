@@ -28,7 +28,7 @@
                 #{list items:repositories, as:'repository'}
                     <tr>
                        <td>${repository.id}</td>
-                       <td>${repository.name}</td>
+                       <td><a href="http://svn.dsv.bradseg.com.br/svn/${repository.name}/trunk">${repository.name}</a></td>
                        <td>${repository.category}</td>
                        <td>${repository.created ? 'Yes':'No'}</td>
                        <td style="text-align:right">

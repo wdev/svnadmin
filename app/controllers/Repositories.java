@@ -10,6 +10,7 @@ import models.Repository;
 import play.data.validation.Valid;
 import play.i18n.Messages;
 import play.mvc.Controller;
+import util.FormatterUtil;
 import util.SvnUtil;
 
 public class Repositories extends AbstractController {
@@ -44,7 +45,7 @@ public class Repositories extends AbstractController {
             render("@create", repository);
         }
         try {
-            repository.name = formatName(repository.name);
+            repository.name = FormatterUtil.formatName(repository.name);
             repository.save();
         
             if (! "/".equals(repository.name)) {
@@ -64,7 +65,7 @@ public class Repositories extends AbstractController {
             flash.error(Messages.get("validation"));
             render("@edit", repository);
         }
-        repository.name = formatName(repository.name);
+        repository.name = FormatterUtil.formatName(repository.name);
         repository = repository.merge();
         
         repository.save();
@@ -72,9 +73,5 @@ public class Repositories extends AbstractController {
         createRepository(repository);
         
         index();
-    }
-    
-    private static String formatName(String name) {
-        return name.replace("-", "_").toLowerCase();
     }
 }

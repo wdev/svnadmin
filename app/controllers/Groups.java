@@ -8,6 +8,7 @@ import models.User;
 import play.data.validation.Valid;
 import play.i18n.Messages;
 import play.mvc.Controller;
+import util.FormatterUtil;
 
 public class Groups extends Controller {
     public static void index() {
@@ -42,6 +43,7 @@ public class Groups extends Controller {
     	
     	if (! validation.hasErrors()) {
     		try {
+    		    group.name = FormatterUtil.formatName(group.name);
     		    group.users = getOrCreateUsers(new ArrayList<User>(), group.logins);
     			group.save();
     			flash.success(Messages.get("created", "Group"));
@@ -62,6 +64,7 @@ public class Groups extends Controller {
     		    if (! "".equals(group.logins)) {
     		        group.users = getOrCreateUsers(group.users, group.logins);
     		    }
+    		    group.name = FormatterUtil.formatName(group.name);
     			group.save();
     			flash.success(Messages.get("updated", "Group"));
     			index();

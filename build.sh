@@ -11,7 +11,7 @@ fi
 
 WAR_FILE="svnadmin##0$RELEASE.war"
 
-function test() {
+function autotest() {
     $PLAY auto-test
 
     cd test-result
@@ -45,7 +45,7 @@ function test() {
 function create_war() {
     rm -rf war 2> /dev/null
     
-    $PLAY war . -o $OUTPUT_WAR_DIR --exclude .svn:.git:war:test-result:tmp:eclipse:logs:application.log --%prod
+    $PLAY war . -o $OUTPUT_WAR_DIR --exclude .svn:.git:war:test:test-result:tmp:eclipse:logs:application.log --%prod
 
     # Add tomcat basic auth in web.xml
     cp conf/tomcat-basic-auth-web.xml $OUTPUT_WAR_DIR/WEB-INF/web.xml
@@ -60,12 +60,16 @@ function create_war() {
 }
 
 function deploy() {
-    scp war/$WAR_FILE ips@icbradesco:/opt/ips/tomcat7/webapps/
+    scp war/$WAR_FILE ips@svnbradesco:/opt/ips/tomcat7/webapps/
 }
 
 
 git pull
-#test
+autotest
 create_war
-#deploy
+
+if [ "$1" == "deploy" ]; then
+    deploy
+fi
+
 

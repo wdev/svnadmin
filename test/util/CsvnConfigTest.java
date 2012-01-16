@@ -8,7 +8,6 @@ import models.Group;
 import models.Permission;
 import models.Repository;
 
-import org.hibernate.HibernateException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +37,7 @@ public class CsvnConfigTest extends UnitTest {
 		    "admin=ipsadmin" + LINE_SEPARATOR +
 			"paol_admin=L568431,L966258" + LINE_SEPARATOR +
 		    "inet_kitdigitalauto=L966259,L568478" + LINE_SEPARATOR +
-			"gsin_gestaodesinistros=L966259,L568431" + LINE_SEPARATOR +
+			"gsin_gestaodesinistros=L568431,L966259" + LINE_SEPARATOR +
 		    "lexw_infraestrutura=F199607" + LINE_SEPARATOR +
 			"lexw_infraestrutura_branches=L791238" + LINE_SEPARATOR;
 
@@ -129,9 +128,9 @@ public class CsvnConfigTest extends UnitTest {
 		
 		String expected = "[groups]" + LINE_SEPARATOR +
 			    "admin=ipsadmin" + LINE_SEPARATOR +
-				"paol_admin=L568431,L966258" + LINE_SEPARATOR +
-			    "inet_kitdigitalauto=L966259,L568478" + LINE_SEPARATOR +
-				"gsin_gestaodesinistros=L966259,L568431" + LINE_SEPARATOR +
+				"paol_admin=L966258,L568431" + LINE_SEPARATOR +
+			    "inet_kitdigitalauto=L568478,L966259" + LINE_SEPARATOR +
+				"gsin_gestaodesinistros=L568431,L966259" + LINE_SEPARATOR +
 			    "lexw_infraestrutura=F199607" + LINE_SEPARATOR +
 				"lexw_infraestrutura_branches=L791238" + LINE_SEPARATOR +
 				"[/]" + LINE_SEPARATOR +

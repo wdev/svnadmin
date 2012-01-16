@@ -1,8 +1,8 @@
 package util;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import models.Group;
 import models.Permission;
@@ -105,8 +105,8 @@ public class CsvnImporter {
 		return (! line.startsWith("[") && ! line.startsWith("@") && line.contains("="));
 	}
 
-	private List<User> getOrCreateUsers(String usersLogin) {
-		List<User> users = new ArrayList<User>();
+	private Set<User> getOrCreateUsers(String usersLogin) {
+	    Set<User> users = new HashSet<User>();
 		
 		String[] logins = usersLogin.replace(" ", "").split(",");
 		for (String login : logins) {

@@ -1,6 +1,6 @@
 package models;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,7 +20,7 @@ public class Group extends Model {
 	public String name;
 	
 	@ManyToMany
-	public List<User> users;
+	public Set<User> users;
 	
 	@Transient
 	public String logins;

@@ -68,7 +68,8 @@ public class CsvnImporterTest extends UnitTest {
 		
 		Group suporte = Group.find("byName", "suporte").first();
 		assertNotNull(suporte);
-		assertEquals(19, suporte.users.size());
+		// there is 19 but the login G454422 is duplicated
+		assertEquals(18, suporte.users.size());
 		
 		Group paol = Group.find("byName", "paol_admin").first();
 		assertNotNull(paol);

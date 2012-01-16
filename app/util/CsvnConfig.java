@@ -3,15 +3,15 @@ package util;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
+import java.util.Set;
 
 import models.Group;
 import models.Permission;
 import models.User;
+
+import org.apache.commons.io.FileUtils;
 
 public class CsvnConfig {
 
@@ -106,7 +106,7 @@ public class CsvnConfig {
 		return (value != null && ! value.isEmpty());
 	}
 
-	private String getUsersLine(List<User> users) {
+	private String getUsersLine(Set<User> users) {
 		StringBuffer config = new StringBuffer();
 		for (User user : users) {
 			config.append(user.login + ",");

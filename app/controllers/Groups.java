@@ -1,7 +1,8 @@
 package controllers;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import models.Group;
 import models.User;
@@ -44,7 +45,7 @@ public class Groups extends Controller {
     	if (! validation.hasErrors()) {
     		try {
     		    group.name = FormatterUtil.formatName(group.name);
-    		    group.users = getOrCreateUsers(new ArrayList<User>(), group.logins);
+    		    group.users = getOrCreateUsers(new HashSet<User>(), group.logins);
     			group.save();
     			flash.success(Messages.get("created", "Group"));
     			index();
@@ -77,7 +78,7 @@ public class Groups extends Controller {
     	render("@edit", group);
     }
     
-    private static List<User> getOrCreateUsers(List<User> users, String logins) {
+    private static Set<User> getOrCreateUsers(Set<User> users, String logins) {
         logins = logins.replace(" ", "");
         String[] vector = logins.split(",");
         for (String login : vector) {

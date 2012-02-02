@@ -5,10 +5,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import models.Group;
 import models.Permission;
+import models.Repository;
 import models.User;
 
 import org.apache.commons.io.FileUtils;
@@ -16,6 +20,11 @@ import org.apache.commons.io.FileUtils;
 public class CsvnConfig {
 
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+	
+	private static final String ROOT = "/";
+	private static final String TRUNK = "/trunk";
+	private static final String BRANCHES = "/branches";
+	private static final String TAGS = "/tags";
 	
 	
 	public String getGroupsAndUsersLines(List<Group> groups) {
@@ -32,40 +41,66 @@ public class CsvnConfig {
 		return config.toString();
 	}
 
-	public String getPermissionsLines(List<Permission> permissions) {
-		StringBuffer config = new StringBuffer();
-
-		for (Permission permission : permissions) {
-			if (hasUsersIn(permission.group)) {
-				if ("/".equals(permission.repository.name)) {
-					config.append("[/]" + LINE_SEPARATOR);
-					config = addPermissionLine(config, permission, permission.root);
-				}
-				else {
-				
-					if (isNotNull(permission.root)) {
-						config = addReposLine(config, permission, "/");
-						config = addPermissionLine(config, permission, permission.root);
-					}
-					
-					if (isNotNull(permission.trunk)) {
-						config = addReposLine(config, permission, "/trunk");
-						config = addPermissionLine(config, permission, permission.trunk);
-					}
-					
-					if (isNotNull(permission.branches)) {
-						config = addReposLine(config, permission, "/branches");
-						config = addPermissionLine(config, permission, permission.branches);
-					}
-				}
-			}
-		}
-
-		return config.toString();
+	public String getPermissionsLines(List<Repository> repositories) {
+		
+	    Map<String, Set<String>> repos = new TreeMap<String, Set<String>>();
+	    
+		for (Repository repository : repositories) {
+		    List<Permission> permissions = Permission.find("byRepository", repository).fetch();
+		    
+		    for (Permission permission : permissions) {
+	            if (hasUsersIn(permission.group)) {
+	                if ("/".equals(permission.repository.name)) {
+	                    Set<String> lines = new TreeSet<String>();
+	                    lines.add(getPermissionLine(permission, permission.root));
+	                    repos.put("[/]" + LINE_SEPARATOR, lines);
+	                }
+	                else {
+	                    addConfigLine(ROOT, repos, permission, permission.root);
+	                    addConfigLine(TRUNK, repos, permission, permission.trunk);
+	                    addConfigLine(BRANCHES, repos, permission, permission.branches);
+	                    addConfigLine(TAGS, repos, permission, permission.tags);
+	                    
+	                }
+	            }
+	        }
+        }
+		
+		return getConfigLines(repos);
 	}
+
+    private String getConfigLines(Map<String, Set<String>> repositories) {
+        StringBuffer lines = new StringBuffer();
+		
+		Set<String> keys = repositories.keySet();
+		
+		for (String repository : keys) {
+		    lines.append(repository);
+		    
+		    Set<String> permissions = repositories.get(repository);
+		    for (String permission : permissions) {
+                lines.append(permission);
+            }
+        }
+        return lines.toString();
+    }
+
+	private void addConfigLine(String directory, Map<String, Set<String>> repos, Permission permission, String perm) {
+	    if (isNotNull(perm)) {
+            String repositoryLine = getReposLine(permission, directory);
+            if (dontExistsIn(repos, repositoryLine)) {
+                repos.put(repositoryLine, new TreeSet<String>());
+            }
+            repos.get(repositoryLine).add(getPermissionLine(permission, perm));
+        }
+    }
 	
-	public String getConfig(List<Group> groups, List<Permission> permissions) {
-		return this.getGroupsAndUsersLines(groups) + this.getPermissionsLines(permissions);
+	private boolean dontExistsIn(Map<String, Set<String>> repos, String reposName) {
+        return ! repos.containsKey(reposName);
+    }
+
+    public String getConfig(List<Group> groups, List<Repository> repositories) {
+		return this.getGroupsAndUsersLines(groups) + this.getPermissionsLines(repositories);
 	}
 	
 	public String getConfigurationFromFile(String filePath) throws IOException {
@@ -94,12 +129,12 @@ public class CsvnConfig {
 		}
 	}
 	
-	private StringBuffer addPermissionLine(StringBuffer config, Permission permission, String value) {
-		return config.append("@" + permission.group.name + "=" + value + LINE_SEPARATOR);
+	private String getPermissionLine(Permission permission, String value) {
+		return "@" + permission.group.name + "=" + value + LINE_SEPARATOR;
 	}
 
-	private StringBuffer addReposLine(StringBuffer config, Permission permission, String repos) {
-		return config.append("[" + permission.repository.name + ":" + repos + "]" + LINE_SEPARATOR);
+	private String getReposLine(Permission permission, String repos) {
+		return "[" + permission.repository.name + ":" + repos + "]" + LINE_SEPARATOR;
 	}
 
 	private boolean isNotNull(String value) {

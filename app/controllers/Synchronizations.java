@@ -3,7 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Group;
-import models.Permission;
+import models.Repository;
 import models.Synchronization;
 import play.Play;
 import play.i18n.Messages;
@@ -49,11 +49,9 @@ public class Synchronizations extends Controller {
     
 	private static String getConfiguration() {
 		List<Group> groups = Group.all().fetch();
-        List<Permission> permissions = Permission.all().fetch();
+        List<Repository> repositories = Repository.all().fetch();
         
-        String configuration = csvnConfig.getConfig(groups, permissions);
-        
-		return configuration;
+        return csvnConfig.getConfig(groups, repositories);
 	}
 
 }

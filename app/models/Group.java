@@ -1,5 +1,6 @@
 package models;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import play.data.validation.Required;
+import play.db.jpa.JPABase;
 import play.db.jpa.Model;
 
 @Entity(name="groups")
@@ -25,11 +27,17 @@ public class Group extends Model {
 	@Transient
 	public String logins;
 	
-	@OneToOne(cascade=CascadeType.REMOVE, mappedBy="group")
-	public Permission permission;
-	
 	@Override
 	public String toString() {
 		return this.name;
+	}
+	
+	@Override
+	public <T extends JPABase> T delete() {
+	    List<Permission> permissions = Permission.find("byGroup", this).fetch();
+	    for (Permission permission : permissions) {
+            permission.delete();
+        }
+	    return super.delete();
 	}
 }

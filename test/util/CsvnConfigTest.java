@@ -21,11 +21,14 @@ public class CsvnConfigTest extends UnitTest {
 	
 	private CsvnConfig csvnConfig;
 	
+	List<Repository> repositories;
+	
 	@Before
 	public void setUp() {
 		Fixtures.deleteAllModels();
 		Fixtures.loadModels("data.yml");
 		csvnConfig = new CsvnConfig();
+		repositories = Repository.all().fetch();
 	}
 	
 	@Test
@@ -33,30 +36,31 @@ public class CsvnConfigTest extends UnitTest {
 		List<Group> groups = Group.all().fetch();
 		String config = csvnConfig.getGroupsAndUsersLines(groups);
 		
-		String expected = "[groups]" + LINE_SEPARATOR +
-		    "admin=ipsadmin" + LINE_SEPARATOR +
-			"paol_admin=L568431,L966258" + LINE_SEPARATOR +
-		    "inet_kitdigitalauto=L966259,L568478" + LINE_SEPARATOR +
-			"gsin_gestaodesinistros=L568431,L966259" + LINE_SEPARATOR +
-		    "lexw_infraestrutura=F199607" + LINE_SEPARATOR +
-			"lexw_infraestrutura_branches=L791238" + LINE_SEPARATOR;
+		String expected = "[groups]"                               + LINE_SEPARATOR +
+		                  "admin=ipsadmin"                         + LINE_SEPARATOR +
+		                  "paol_admin=L568431,L966258"             + LINE_SEPARATOR +
+		                  "inet_kitdigitalauto=L966259,L568478"    + LINE_SEPARATOR +
+		                  "gsin_gestaodesinistros=L568431,L966259" + LINE_SEPARATOR +
+		                  "lexw_infraestrutura=F199607"            + LINE_SEPARATOR +
+		                  "lexw_infraestrutura_branches=L791238"   + LINE_SEPARATOR;
 
 		assertEquals(expected, config);
 	}
 	
 	@Test
 	public void testGetConfigurationPermissions() {
-		List<Permission> permissions = Permission.all().fetch();
-		String config = csvnConfig.getPermissionsLines(permissions);
+		String config = csvnConfig.getPermissionsLines(repositories);
 		
-		String expected = "[/]" + LINE_SEPARATOR +
-			"@admin=rw" + LINE_SEPARATOR +
-		    "[paol_admin:/]" + LINE_SEPARATOR +
-			"@paol_admin=r" + LINE_SEPARATOR +
-		    "[paol_admin:/trunk]" + LINE_SEPARATOR +
-			"@paol_admin=rw" + LINE_SEPARATOR +
-		    "[lexw_infraestrutura:/branches]" + LINE_SEPARATOR +
-			"@lexw_infraestrutura_branches=r" + LINE_SEPARATOR;
+		String expected = "[/]"                             + LINE_SEPARATOR +
+		                  "@admin=rw"                       + LINE_SEPARATOR +
+		                  "[lexw_infraestrutura:/branches]" + LINE_SEPARATOR +
+		                  "@lexw_infraestrutura_branches=r" + LINE_SEPARATOR +
+		                  "[paol_admin:/]"                  + LINE_SEPARATOR +
+		                  "@admin=rw"                       + LINE_SEPARATOR +
+		                  "@paol_admin=r"                   + LINE_SEPARATOR +
+		                  "[paol_admin:/trunk]"             + LINE_SEPARATOR +
+		                  "@admin=rw"                       + LINE_SEPARATOR +
+		                  "@paol_admin=rw"                  + LINE_SEPARATOR;
 
 		assertEquals(expected, config);
 	}
@@ -66,14 +70,17 @@ public class CsvnConfigTest extends UnitTest {
 		Group group = Group.find("byName", "paol_admin").first();
 		group.delete();
 		
-		List<Permission> permissions = Permission.all().fetch();
-		String config = csvnConfig.getPermissionsLines(permissions);
+		String config = csvnConfig.getPermissionsLines(repositories);
 		
-		String expected = "[/]" + LINE_SEPARATOR +
-			"@admin=rw" + LINE_SEPARATOR +
-		    "[lexw_infraestrutura:/branches]" + LINE_SEPARATOR +
-			"@lexw_infraestrutura_branches=r" + LINE_SEPARATOR;
-
+		String expected = "[/]"                             + LINE_SEPARATOR +
+            			  "@admin=rw"                       + LINE_SEPARATOR +
+            		      "[lexw_infraestrutura:/branches]" + LINE_SEPARATOR +
+            			  "@lexw_infraestrutura_branches=r" + LINE_SEPARATOR +
+            			  "[paol_admin:/]"                  + LINE_SEPARATOR +
+                          "@admin=rw"                       + LINE_SEPARATOR +
+                          "[paol_admin:/trunk]"             + LINE_SEPARATOR +
+                          "@admin=rw"                       + LINE_SEPARATOR;
+		
 		assertEquals(expected, config);
 	}
 	
@@ -82,27 +89,12 @@ public class CsvnConfigTest extends UnitTest {
 		Repository repository = Repository.find("byName", "paol_admin").first();
 		repository.delete();
 		
-		List<Permission> permissions = Permission.all().fetch();
-		String config = csvnConfig.getPermissionsLines(permissions);
+		String config = csvnConfig.getPermissionsLines(repositories);
 		
-		String expected = "[/]" + LINE_SEPARATOR +
-			"@admin=rw" + LINE_SEPARATOR +
-		    "[lexw_infraestrutura:/branches]" + LINE_SEPARATOR +
-			"@lexw_infraestrutura_branches=r" + LINE_SEPARATOR;
-
-		assertEquals(expected, config);
-	}
-	
-	@Test
-	public void testGetConfigurationPermissionsWithoutBranches() {
-		Repository repository = Repository.find("byName", "paol_admin").first();
-		List<Permission> permissions = Permission.find("byRepository", repository).fetch();
-		String config = csvnConfig.getPermissionsLines(permissions);
-		
-		String expected = "[paol_admin:/]" + LINE_SEPARATOR +
-			"@paol_admin=r" + LINE_SEPARATOR +
-		    "[paol_admin:/trunk]" + LINE_SEPARATOR +
-			"@paol_admin=rw" + LINE_SEPARATOR;
+		String expected = "[/]"                              + LINE_SEPARATOR +
+            			  "@admin=rw"                        + LINE_SEPARATOR +
+            		      "[lexw_infraestrutura:/branches]"  + LINE_SEPARATOR +
+            			  "@lexw_infraestrutura_branches=r"  + LINE_SEPARATOR;
 
 		assertEquals(expected, config);
 	}
@@ -120,44 +112,46 @@ public class CsvnConfigTest extends UnitTest {
 	}
 	
 	@Test
-	public void testGetConfigurationTextFromPermissionsWhenGroupDontHaveUsers() {
-		List<Group> groups = Group.all().fetch();
-		List<Permission> permissions = Permission.all().fetch();
+	public void testGetConfigurationWhenGroupDontHaveUsers() {
+		List<Group> groups = Group.find("order by name").fetch();
+		List<Repository> repositories = Repository.all().fetch();
 		
-		String config = csvnConfig.getConfig(groups, permissions);
+		String config = csvnConfig.getConfig(groups, repositories);
 		
-		String expected = "[groups]" + LINE_SEPARATOR +
-			    "admin=ipsadmin" + LINE_SEPARATOR +
-				"paol_admin=L966258,L568431" + LINE_SEPARATOR +
-			    "inet_kitdigitalauto=L568478,L966259" + LINE_SEPARATOR +
-				"gsin_gestaodesinistros=L568431,L966259" + LINE_SEPARATOR +
-			    "lexw_infraestrutura=F199607" + LINE_SEPARATOR +
-				"lexw_infraestrutura_branches=L791238" + LINE_SEPARATOR +
-				"[/]" + LINE_SEPARATOR +
-				"@admin=rw" + LINE_SEPARATOR +
-			    "[paol_admin:/]" + LINE_SEPARATOR +
-				"@paol_admin=r" + LINE_SEPARATOR +
-			    "[paol_admin:/trunk]" + LINE_SEPARATOR +
-				"@paol_admin=rw" + LINE_SEPARATOR +
-			    "[lexw_infraestrutura:/branches]" + LINE_SEPARATOR +
-				"@lexw_infraestrutura_branches=r" + LINE_SEPARATOR;
-
+		String expected = "[groups]"                                + LINE_SEPARATOR +
+			              "admin=ipsadmin"                          + LINE_SEPARATOR +
+			              "gsin_gestaodesinistros=L568431,L966259"  + LINE_SEPARATOR +
+			              "inet_kitdigitalauto=L568478,L966259"     + LINE_SEPARATOR +
+			              "lexw_infraestrutura=F199607"             + LINE_SEPARATOR +
+			              "lexw_infraestrutura_branches=L791238"    + LINE_SEPARATOR +
+        				  "paol_admin=L568431,L966258"              + LINE_SEPARATOR +
+        				  "[/]"                                     + LINE_SEPARATOR +
+        				  "@admin=rw"                               + LINE_SEPARATOR +
+        				  "[lexw_infraestrutura:/branches]"         + LINE_SEPARATOR +
+        				  "@lexw_infraestrutura_branches=r"         + LINE_SEPARATOR +
+        			      "[paol_admin:/]"                          + LINE_SEPARATOR +
+        			      "@admin=rw"                               + LINE_SEPARATOR +
+        				  "@paol_admin=r"                           + LINE_SEPARATOR +
+        			      "[paol_admin:/trunk]"                     + LINE_SEPARATOR +
+        			      "@admin=rw"                               + LINE_SEPARATOR +
+        				  "@paol_admin=rw"                          + LINE_SEPARATOR;
+		
 		assertEquals(expected, config);
 	}
 	
 	@Test
 	public void testGetConfigurationFromFile() throws IOException {
-		String expected = "[groups]" + LINE_SEPARATOR +
-			"bsad_framework=L4343435" + LINE_SEPARATOR +
+		String expected = "[groups]"      + LINE_SEPARATOR +
+			"bsad_framework=L4343435"     + LINE_SEPARATOR +
 			"paol_admin=L909090,L4343435" + LINE_SEPARATOR +
-			"[bsad_framework:/]" + LINE_SEPARATOR +
-			"@bsad_framework=r" + LINE_SEPARATOR +
-			"[bsad_framework:/trunk]" + LINE_SEPARATOR +
-			"@bsad_framework=rw" + LINE_SEPARATOR +
-			"[paol_admin:/]" + LINE_SEPARATOR +
-			"@paol_admin=r" + LINE_SEPARATOR +
-			"[paol_admin:/trunk]" + LINE_SEPARATOR +
-			"@paol_admin=rw" + LINE_SEPARATOR;
+			"[bsad_framework:/]"          + LINE_SEPARATOR +
+			"@bsad_framework=r"           + LINE_SEPARATOR +
+			"[bsad_framework:/trunk]"     + LINE_SEPARATOR +
+			"@bsad_framework=rw"          + LINE_SEPARATOR +
+			"[paol_admin:/]"              + LINE_SEPARATOR +
+			"@paol_admin=r"               + LINE_SEPARATOR +
+			"[paol_admin:/trunk]"         + LINE_SEPARATOR +
+			"@paol_admin=rw"              + LINE_SEPARATOR;
 		
 		String filePath = Play.configuration.getProperty("csvn.config.path");
 		String config = csvnConfig.getConfigurationFromFile(filePath);
@@ -166,19 +160,19 @@ public class CsvnConfigTest extends UnitTest {
 	
 	@Test
 	public void testSaveConfigurationToFile() throws IOException {
-		String configuration = "[groups]" + LINE_SEPARATOR +
-			"lexw_fddfd=L4343435" + LINE_SEPARATOR +
-			"bsad_framework=L4343435,L4343535" + LINE_SEPARATOR +
-			"[lexw_teste:/]" + LINE_SEPARATOR +
-			"@lexw_fddfd=r" + LINE_SEPARATOR +
-			"[lexw_teste:/trunk]" + LINE_SEPARATOR +
-			"@lexw_fddfd=rw" + LINE_SEPARATOR +
-			"[lexw_teste:/branches]" + LINE_SEPARATOR +
-			"@lexw_fddfd=r" + LINE_SEPARATOR +
-			"[bsad_framework:/]" + LINE_SEPARATOR +
-			"@bsad_framework=r" + LINE_SEPARATOR +
-			"[bsad_framework:/trunk]" + LINE_SEPARATOR +
-			"@bsad_framework=rw" + LINE_SEPARATOR;
+		String configuration = "[groups]"        + LINE_SEPARATOR +
+			"lexw_fddfd=L4343435"                + LINE_SEPARATOR +
+			"bsad_framework=L4343435,L4343535"   + LINE_SEPARATOR +
+			"[lexw_teste:/]"                     + LINE_SEPARATOR +
+			"@lexw_fddfd=r"                      + LINE_SEPARATOR +
+			"[lexw_teste:/trunk]"                + LINE_SEPARATOR +
+			"@lexw_fddfd=rw"                     + LINE_SEPARATOR +
+			"[lexw_teste:/branches]"             + LINE_SEPARATOR +
+			"@lexw_fddfd=r"                      + LINE_SEPARATOR +
+			"[bsad_framework:/]"                 + LINE_SEPARATOR +
+			"@bsad_framework=r"                  + LINE_SEPARATOR +
+			"[bsad_framework:/trunk]"            + LINE_SEPARATOR +
+			"@bsad_framework=rw"                 + LINE_SEPARATOR;
 		
 		String filePath = "tmp/svn_access_file";
 		assertTrue(csvnConfig.saveConfigurationToFile(configuration, filePath));

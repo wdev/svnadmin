@@ -93,3 +93,9 @@ Permission(p4):
     trunk: rw
     branches:
 
+Permission(p5):
+    group: admin
+    repository: paol_admin_repos
+    root: rw
+    trunk: rw
+    branches:

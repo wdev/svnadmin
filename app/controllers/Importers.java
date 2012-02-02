@@ -1,24 +1,16 @@
 package controllers;
 
-import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
-import org.h2.command.ddl.CreateLinkedTable;
-
 import models.Group;
-import models.Importer;
-import models.Permission;
-import models.Importer;
 import models.Importer;
 import models.Repository;
 import play.Play;
 import play.data.validation.Valid;
 import play.i18n.Messages;
-import play.mvc.Controller;
 import util.CsvnConfig;
 import util.CsvnImporter;
-import util.SvnUtil;
 
 public class Importers extends AbstractController {
 	
@@ -65,10 +57,10 @@ public class Importers extends AbstractController {
 
 	private static void saveConfigurationFile() {
 		List<Group> groups = Group.all().fetch();
-		List<Permission> permissions = Permission.all().fetch();
+		List<Repository> repositories = Repository.all().fetch();
 		CsvnConfig csvnConfig = new CsvnConfig();
-		String configuration = csvnConfig.getConfig(groups, permissions);
-		csvnConfig. saveConfigurationToFile(configuration, Play.configuration.getProperty("csvn.config.path"));
+		String configuration = csvnConfig.getConfig(groups, repositories);
+		csvnConfig.saveConfigurationToFile(configuration, Play.configuration.getProperty("csvn.config.path"));
 	}
     
     public static void show(Long id) {

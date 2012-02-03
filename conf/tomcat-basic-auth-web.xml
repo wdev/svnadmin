@@ -32,7 +32,7 @@
   
   <context-param>
     <param-name>play.id</param-name>
-    <param-value>dev</param-value>
+    <param-value>prod</param-value>
   </context-param>
   
   <listener>

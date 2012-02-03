@@ -25,7 +25,36 @@ public class GroupsTest extends FunctionalTest {
     }
     
     @Test
-    public void testThatIndexPageWorks() {
+    public void testSaveGroupWithOneUser() {
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("group.name", "mygroup");
+        parameters.put("group.logins", "xpto1");
+        
+        POST("/groups/save", parameters);
+        
+        assertEquals(1, getGroup("mygroup").users.size());
+    }
+    
+    @Test
+    public void testSaveGroupWithThreeUsersSeparatingByComma() {
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("group.name", "mygroup");
+        parameters.put("group.logins", "xpto1, xpto2, xpto3");
+        
+        POST("/groups/save", parameters);
+        
+        assertEquals(3, getGroup("mygroup").users.size());
+    }
+    
+    @Test
+    public void testDelete() {
+        GET("/groups/delete?id=" + group.id);
+        
+        assertNull(getGroup(group.name));
+    }
+    
+    @Test
+    public void testUpdateCannotAddADuplicatedUser() {
         Set<User> users = group.users;
         assertEquals(2, users.size());
         
@@ -35,7 +64,10 @@ public class GroupsTest extends FunctionalTest {
         
         POST("/groups/update", parameters);
         
-        Group sameGroup = Group.find("byName", group.name).first();
-        assertEquals(2, sameGroup.users.size());
+        assertEquals(2, getGroup(group.name).users.size());
+    }
+    
+    private Group getGroup(String name) {
+        return Group.find("byName", name).first();
     }
 }

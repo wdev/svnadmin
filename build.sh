@@ -1,7 +1,6 @@
 #!/bin/bash
-set xe
 PLAY="/opt/play/play"
-OUTPUT_WAR_DIR="war/svnadmin"
+OUTPUT_WAR_DIR="/tmp/svnadmin"
 
 RELEASE=`cat RELEASE 2> /dev/null`
 if [ "$RELEASE" == "" ]; then
@@ -60,16 +59,31 @@ function create_war() {
 }
 
 function deploy() {
-    scp war/$WAR_FILE ips@svnbradesco:/opt/ips/tomcat7/webapps/
+    local server=$1
+    if [ "$server" == "" ]; then
+        echo "What server?"
+        exit 1
+    fi
+
+    local release=$2
+    if [ "$release" == "" ]; then
+        echo "What release?"
+        exit 1
+    fi
+
+    local file="svnadmin##0$release.war"
+    scp $OUTPUT_WAR_DIR/../$file ips@$server:/opt/ips/tomcat7/webapps/
 }
 
-
-git pull
-autotest
-create_war
-
-if [ "$1" == "deploy" ]; then
-    deploy
-fi
-
+case "$1" in
+   deploy)
+       echo "deploying..."
+       deploy $2 $3
+       ;;
+   *)
+       echo "building..."
+       autotest
+       create_war
+       ;;
+esac
 

@@ -50,18 +50,10 @@ public class CsvnConfig {
 		    
 		    for (Permission permission : permissions) {
 	            if (hasUsersIn(permission.group)) {
-	                if ("/".equals(permission.repository.name)) {
-	                    Set<String> lines = new TreeSet<String>();
-	                    lines.add(getPermissionLine(permission, permission.root));
-	                    repos.put("[/]" + LINE_SEPARATOR, lines);
-	                }
-	                else {
-	                    addConfigLine(ROOT, repos, permission, permission.root);
-	                    addConfigLine(TRUNK, repos, permission, permission.trunk);
-	                    addConfigLine(BRANCHES, repos, permission, permission.branches);
-	                    addConfigLine(TAGS, repos, permission, permission.tags);
-	                    
-	                }
+                    addConfigLine(ROOT, repos, permission, permission.root);
+                    addConfigLine(TRUNK, repos, permission, permission.trunk);
+                    addConfigLine(BRANCHES, repos, permission, permission.branches);
+                    addConfigLine(TAGS, repos, permission, permission.tags);
 	            }
 	        }
         }
@@ -134,6 +126,9 @@ public class CsvnConfig {
 	}
 
 	private String getReposLine(Permission permission, String repos) {
+	    if ("/".equals(permission.repository.name)) {
+	        return "[/]" + LINE_SEPARATOR;
+	    }
 		return "[" + permission.repository.name + ":" + repos + "]" + LINE_SEPARATOR;
 	}
 

@@ -1,6 +1,9 @@
 User(ipsadmin):
     login: ipsadmin
 
+User(manager):
+    login: manager
+
 User(L568431):
     login: L568431
 
@@ -50,6 +53,10 @@ Group(suport):
     name: suport
     users:
 
+Group(managers):
+    name: managers
+    users: manager
+
 Repository(root):
     name: /
 
@@ -98,4 +105,11 @@ Permission(p5):
     repository: paol_admin_repos
     root: rw
     trunk: rw
+    branches:
+
+Permission(p6):
+    group: managers
+    repository: root
+    root: r
+    trunk:
     branches:

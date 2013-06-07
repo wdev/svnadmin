@@ -20,7 +20,8 @@ public abstract class AbstractController extends Controller {
 				svnUtil.createDir("trunk", svnUrl);
 				svnUtil.createDir("tags", svnUrl);
 				svnUtil.createDir("branches", svnUrl);
-				if ("BSAD2".equalsIgnoreCase(repository.category)) {
+				
+				    if ("BSAD2".equalsIgnoreCase(repository.category)) {
 					SVNURL trunkUrl = SVNURL.parseURIEncoded(svnUrl + "/trunk");
 					svnUtil.createDir("ejbClient", trunkUrl);
 				}

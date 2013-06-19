@@ -11,15 +11,14 @@
 <p>
     <label>Category</label><br>
     <select name="repository.category" class="styled">
+       <option value="Android" #{if repository?.category == 'Android' }selected="true"#{/if}>Android</option>
        <option value="BSAD1" #{if repository?.category == 'BSAD1' }selected="true"#{/if}>BSAD1</option>
        <option value="BSAD2" #{if repository?.category == 'BSAD2' }selected="true"#{/if}>BSAD2</option>
        <option value="BSAD3" #{if repository?.category == 'BSAD3' }selected="true"#{/if}>BSAD3</option> 
        <option value="iOS" #{if repository?.category == 'iOS' }selected="true"#{/if}>iOS</option>
-       <option value="Android" #{if repository?.category == 'Android' }selected="true"#{/if}>Android</option>
-       <option value="VB" #{if repository?.category == 'VB' }selected="true"#{/if}>VB</option>
        <option value="Portal" #{if repository?.category == 'Portal' }selected="true"#{/if}>Portal</option>
+       <option value="VB" #{if repository?.category == 'VB' }selected="true"#{/if}>VB</option>
     </select>
-    <span class="note">* BSAD2 creates a ejbClient directory</span>
     <span class="note error">${errors.forKey('repository.category')}</span>
 </p>
 

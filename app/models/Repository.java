@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import play.data.validation.Required;
@@ -18,7 +19,9 @@ public class Repository extends Model {
 	@Column(unique=true)
 	public String name;
 	
-	public String category;
+	@Required
+	@OneToOne
+	public Category category;
 	
 	@Transient
 	public Boolean created;

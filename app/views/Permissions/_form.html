@@ -5,7 +5,7 @@
 <div style="float:left; height:190px; width:350px; margin-right:50px; border-right:1px dotted silver">
 	<p>
 	    <label>Group</label><br>
-	    <select name="permission.group.id" class="chzn-select">
+	    <select name="permission.group.id" class="styled">
 	        %{ models.Group.all().fetch().sort{ it.toString() }.each() { }%
 	            %{ 
 	                selected = false;
@@ -23,7 +23,7 @@
 	
 	<p>
 	    <label>Repository</label><br>
-	    <select name="permission.repository.id" class="chzn-select">
+	    <select name="permission.repository.id" class="styled">
 	        %{ models.Repository.all().fetch().sort{ it.toString() }.each() { }%
 	            %{ 
 	                selected = false;

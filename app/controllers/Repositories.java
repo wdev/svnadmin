@@ -6,6 +6,7 @@ import java.util.List;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNURL;
 
+import models.Category;
 import models.Repository;
 import play.data.validation.Valid;
 import play.i18n.Messages;
@@ -22,7 +23,7 @@ public class Repositories extends AbstractController {
 		}
         render(repositories);
     }
-
+    
     public static void create(Repository repository) {
         render(repository);
     }

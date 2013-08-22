@@ -11,7 +11,7 @@ public class Category extends Model {
 
 	@Required
 	@Column(unique=true)
-	private String descricao;
+	public String descricao;
 	
 	@Override
 	public String toString() {

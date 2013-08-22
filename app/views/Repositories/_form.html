@@ -10,7 +10,7 @@
 
 <p>
  	 <label>Categoria</label><br>
-	 <select name="category" class="styled">
+	 <select name="repository.category.id" class="styled">
 	        %{ models.Category.all().fetch().sort{ it.toString() }.each() { }%
 	            %{ 
 	                selected = false;

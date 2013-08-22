@@ -72,6 +72,9 @@ Repository(gsin_gestaodesinistros_repos):
 Repository(lexw_infraestrutura_repos):
     name: lexw_infraestrutura
 
+Category(c1):
+    descricao: BSAD2
+
 Permission(p1):
     group: admin
     repository: root

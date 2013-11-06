@@ -13,17 +13,8 @@
         #{include 'errors/_generic.html' /}
         
         #{form @Synchronizations.save(), id:'createForm'}
-            <p>
-			    <label>Configuration</label><br>
-			    <textarea readonly="readonly" rows="10">${configuration}</textarea>
-			<span class="note error">The synchronization is the final step. You only need to do it after add all permissions.</span>
-			</p>
-			
-
-            <hr>
-            
+            <br>
             <input type="submit" name="submit" value="Save" class="submit small">
-            <input type="button" name="cancel" value="Cancel" class="submit small" onclick="window.location.href='@{Synchronizations.index}'">
             <br><br>
         #{/form}
     </div>

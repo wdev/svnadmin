@@ -15,9 +15,8 @@ public class Synchronizations extends Controller {
 	private static CsvnConfig csvnConfig = new CsvnConfig();
 	
     public static void index() {
-    	List<Synchronization> synchronizations = Synchronization.all().fetch();
-    	String configuration = getConfiguration();
-        render(configuration, synchronizations);
+    	List<Synchronization> synchronizations = Synchronization.all().fetch(10);
+        render(synchronizations);
     }
 
     public static void save() {

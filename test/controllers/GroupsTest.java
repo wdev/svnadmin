@@ -10,6 +10,7 @@ import models.User;
 import org.junit.Before;
 import org.junit.Test;
 
+import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
 
@@ -22,6 +23,14 @@ public class GroupsTest extends FunctionalTest {
         Fixtures.deleteAllModels();
         Fixtures.loadModels("data.yml");
         group = Group.find("byName", "gsin_gestaodesinistros").first();
+    }
+    
+    @Test
+    public void testFilterByName() {
+        Response response = GET("/groups/filter?value=" + group.name);
+        
+        assertEquals("application/json; charset=utf-8", response.contentType);
+        assertEquals("{\"elements\":[{\"id\":4,\"name\":\"gsin_gestaodesinistros\",\"users\":\"L568431 L966259 \"}]}", response.out.toString());
     }
     
     @Test

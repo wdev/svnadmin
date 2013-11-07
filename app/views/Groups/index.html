@@ -8,13 +8,16 @@
         <div class="bheadr"></div>
         <h2>Groups</h2>
         <ul>
-            <li class="nobg">Total: ${groups?.size}</li>
+            <li class="nobg">Total: ${total}</li>
         </ul>
     </div>
 
     <div class="block_content">
-      #{if groups }
-        <table cellpadding="0" cellspacing="0" width="100%" class="sortable">
+        <p>
+           <label>Search</label><br>
+           <input id="txtSearch" type="text" name="search" class="big-text" onkeydown="search(event, this)">
+        </p>
+        <table id="result" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th width="10" class="header" style="cursor: pointer;">ID</th>
@@ -23,33 +26,44 @@
                     <th width="100"></th>
                 </tr>
             </thead>
-            <tbody>
-                #{list items:groups, as:'group'}
-                    <tr>
-                       <td>${group?.id}</td>
-                       <td>${group?.name}</td>
-                       <td>
-                           #{if group.users }
-                               #{list items:group.users, as:'user'}
-                                   <a href="@{Users.edit(user.id)}">${user.login}</a>&nbsp;&nbsp;
-                               #{/}
-                           #{/if}
-                       </td>
-                       <td style="text-align:right">
-                           <a href="@{Groups.edit(group.id)}">Edit</a>&nbsp;
-                           <a href="@{Groups.delete(group.id)}" onclick="if (!confirm('Are you sure you want to delete this record?')) return false;">Delete</a>
-                       </td>
-                    </tr>
-                #{/list}
+            <tbody id="items">
+                
             </tbody>
         </table>
-      #{/if}
-      #{else}
-          No data inserted.
-      #{/else}  
     </div>
     <div class="bendl"></div>
     <div class="bendr"></div>
 </div>
 
-
+<script type="text/javascript">
+    var search = function(event, element) {
+        var keyCode = ('which' in event) ? event.which : event.keyCode;
+        
+        if (keyCode == 27) {
+            element.value = '';
+        }
+        
+        if (keyCode == 13 && element.value != '') {
+            var url = '@{Groups.filter()}?value=' + element.value;
+            $.ajax({
+                url: url,
+                success: function(response) {
+                    var items = $('#items');
+                    items.html('');
+                    $.each(response.elements, function(i, item) {
+                        var editUrl = '@{Groups.edit()}?id=' + item.id,
+                            deleteUrl = '@{Groups.delete()}?id=' + item.id,
+                            content = '<tr><td>' + item.id + '</td>' +
+                                 '<td>' + item.name + '</td>' +
+                                 '<td>' + item.users + '</td>' +
+                                 '<td style="text-align:right">' +
+                                 '    <a href="' + editUrl + '">Edit</a>&nbsp' +
+                                 '    <a href="' + deleteUrl + '" onclick="if (!confirm(\'Are you sure you want to delete this record?\')) return false;">Delete</a>' +
+                                 '</td></tr>';
+                        items.append(content);
+                    });
+                }
+            });
+        }
+    }
+</script>

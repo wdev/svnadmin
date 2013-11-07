@@ -4,18 +4,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import models.Group;
 import models.Group;
 import models.User;
+
+import org.apache.commons.lang.StringUtils;
+
 import play.data.validation.Valid;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import util.FormatterUtil;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class Groups extends Controller {
     public static void index() {

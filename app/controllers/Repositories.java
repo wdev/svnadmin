@@ -1,27 +1,17 @@
 package controllers;
 
-import java.io.File;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNURL;
+import models.Repository;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.apache.commons.lang.StringUtils;
+
+import play.data.validation.Valid;
+import play.i18n.Messages;
+import util.FormatterUtil;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
-import models.Category;
-import models.Permission;
-import models.Repository;
-import play.data.validation.Valid;
-import play.db.jpa.GenericModel.JPAQuery;
-import play.i18n.Messages;
-import play.mvc.Controller;
-import play.mvc.results.RenderJson;
-import util.FormatterUtil;
-import util.SvnUtil;
 
 public class Repositories extends AbstractController {
 	

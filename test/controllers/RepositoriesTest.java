@@ -9,6 +9,7 @@ import models.Repository;
 import org.junit.Before;
 import org.junit.Test;
 
+import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
 
@@ -34,6 +35,14 @@ public class RepositoriesTest extends FunctionalTest {
         POST("/repositories/save", parameters);
         
         assertNotNull(getRepository("xp_to"));
+    }
+    
+    @Test
+    public void testFilterByName() {
+        Response response = GET("/repositories/filter?value=" + repository.name);
+        
+        assertEquals("application/json; charset=utf-8", response.contentType);
+        assertEquals("{\"elements\":[{\"id\":8,\"name\":\"paol_admin\",\"category\":\"\",\"is_created\":false}]}", response.out.toString());
     }
     
     @Test

@@ -8,43 +8,65 @@
         <div class="bheadr"></div>
         <h2>Repositories</h2>
         <ul>
-            <li class="nobg">Total: ${repositories?.size}</li>
+            <li class="nobg">Total: ${total}</li>
         </ul>
     </div>
-
+    
     <div class="block_content">
-      #{if repositories }
-        <table cellpadding="0" cellspacing="0" width="100%" class="sortable">
-            <thead>
-                <tr>
-                    <th width="10" class="header" style="cursor: pointer;">ID</th>
-                    <th class="header" style="cursor: pointer;">Name</th>
-                    <th class="header" style="cursor: pointer;">Cat</th>
-                    <th class="header" style="cursor: pointer;">is created?</th>
-                    <th width="100"></th>
-                </tr>
-            </thead>
-            <tbody>
-                #{list items:repositories, as:'repository'}
-                    <tr>
-                       <td>${repository.id}</td>
-                       <td><a href="http://svn.dsv.bradseg.com.br/svn/${repository.name}/trunk">${repository.name}</a></td>
-                       <td>${repository.category}</td>
-                       <td>${repository.created ? 'Yes':'No'}</td>
-                       <td style="text-align:right">
-                           <a href="@{Repositories.edit(repository.id)}">Edit</a>&nbsp;
-                           <a href="@{Repositories.delete(repository.id)}" onclick="if (!confirm('Are you sure you want to delete this record?')) return false;">Delete</a>
-                       </td>
-                    </tr>
-                #{/list}
-            </tbody>
-        </table>
-      #{/if}
-      #{else}
-          No data inserted.
-      #{/else}  
+      <p>
+         <label>Search</label><br>
+         <input id="txtSearch" type="text" name="search" class="big-text" onkeydown="search(event, this)">
+      </p>
+      
+      <table id="result" cellpadding="0" cellspacing="0" width="100%">
+          <thead>
+              <tr>
+                  <th width="10" class="header" style="cursor: pointer;">ID</th>
+                  <th class="header" style="cursor: pointer;">Name</th>
+                  <th width="120" class="header">Category</th>
+                  <th width="100" class="header">Is Created?</th>
+                  <th width="100"></th>
+              </tr>
+          </thead>
+          <tbody id="items">
+              
+          </tbody>
+      </table>
     </div>
     <div class="bendl"></div>
     <div class="bendr"></div>
 </div>
 
+<script type="text/javascript">
+    var search = function(event, element) {
+        var keyCode = ('which' in event) ? event.which : event.keyCode;
+        
+        if (keyCode == 27) {
+            element.value = '';
+        }
+        
+        if (keyCode == 13 && element.value != '') {
+            var url = '@{Repositories.filter()}?value=' + element.value;
+            $.ajax({
+                url: url,
+                success: function(response) {
+                    var items = $('#items');
+                    items.html('');
+                    $.each(response.elements, function(i, item) {
+                        var editUrl = '@{Repositories.edit()}?id=' + item.id,
+                            deleteUrl = '@{Repositories.delete()}?id=' + item.id,
+                            content = '<tr><td>' + item.id + '</td>' +
+                                 '<td><a href="http://svn.dsv.bradseg.com.br/svn/' + item.name + '/trunk">' + item.name + '</a></td>' +
+                                 '<td>' + item.category + '</td>' +
+                                 '<td>' + item.is_created + '</td>' +
+                                 '<td style="text-align:right">' +
+                                 '    <a href="' + editUrl + '">Edit</a>&nbsp' +
+                                 '    <a href="' + deleteUrl + '" onclick="if (!confirm(\'Are you sure you want to delete this record?\')) return false;">Delete</a>' +
+                                 '</td></tr>';
+                        items.append(content);
+                    });
+                }
+            });
+        }
+    }
+</script>

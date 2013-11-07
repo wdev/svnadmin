@@ -22,22 +22,11 @@
     <script type="text/javascript" src="@{'/public/javascripts/jquery.visualize.tooltip.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/jquery.select_skin.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/jquery.tablesorter.min.js'}"></script>
-    <script type="text/javascript" src="@{'/public/javascripts/ajaxupload.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/jquery.pngfix.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/custom.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/jquery.dataTables.js'}"></script>
     <script type="text/javascript" src="@{'/public/javascripts/chosen/chosen.jquery.min.js'}"></script>
 
-    <script type="text/javascript">
-	    $(document).ready(function() {
-	        $('.sortable').dataTable({
-	            'sPaginationType': 'full_numbers',
-	        });
-	    } );
-    </script>
-        
-    #{get 'myscripts' /}
-    
     
     <!--[if lt IE 8]>
         <link rel="stylesheet" media="all" href="@{'/public/stylesheets/ie.css'}">

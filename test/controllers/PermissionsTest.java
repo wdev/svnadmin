@@ -2,16 +2,15 @@ package controllers;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import models.Group;
 import models.Permission;
 import models.Repository;
-import models.User;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import play.mvc.Http.Response;
 import play.test.Fixtures;
 import play.test.FunctionalTest;
 
@@ -26,6 +25,14 @@ public class PermissionsTest extends FunctionalTest {
         Fixtures.loadModels("data.yml");
         repository = Repository.find("byName", "paol_admin").first();
         group = Group.find("byName", "paol_admin").first();
+    }
+    
+    @Test
+    public void testFilterByGroupNameAndRepositoryName() {
+        Response response = GET("/permissions/filter?value=" + group.name);
+        
+        assertEquals("application/json; charset=utf-8", response.contentType);
+        assertEquals("{\"elements\":[{\"id\":2,\"root\":\"r\",\"trunk\":\"rw\",\"group\":\"paol_admin\",\"repository\":\"paol_admin\"}]}", response.out.toString());
     }
     
     @Test

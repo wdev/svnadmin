@@ -8,52 +8,67 @@
         <div class="bheadr"></div>
         <h2>Permissions</h2>
         <ul>
-            <li class="nobg">Total: ${permissions?.size}</li>
+            <li class="nobg">Total: ${total}</li>
         </ul>
     </div>
 
     <div class="block_content">
-      #{if permissions }
-        <table cellpadding="0" cellspacing="0" width="100%" class="sortable">
+        <p>
+           <label>Search</label><br>
+           <input id="txtSearch" type="text" name="search" class="big-text" onkeydown="search(event, this)">
+        </p>
+        <table id="result" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th width="10" class="header" style="cursor: pointer;">ID</th>
-                    <th class="header" style="cursor: pointer;">Group</th>
-                    <th class="header" style="cursor: pointer;">Repository</th>
-                    <th class="header" style="cursor: pointer;">/</th>
-                    <th class="header" style="cursor: pointer;">/trunk</th>
-                    <th class="header" style="cursor: pointer;">/branches</th>
-                    <th id="action"></th>
+                    <th class="header">Group</th>
+                    <th class="header">Repository</th>
+                    <th class="header">/</th>
+                    <th class="header">/trunk</th>
+                    <th class="header">/branches</th>
+                    <th width="100"> </th>
                 </tr>
             </thead>
-            <tbody>
-                #{list items:permissions, as:'permission'}
-                    <tr>
-                       <td>${permission.id}</td>
-	                   <td>${permission.group}</td>
-	                   <td>${permission.repository}</td>
-	                   <td>${permission.root}</td>
-	                   <td>${permission.trunk}</td>
-	                   <td>${permission.branches}</td>
-                       <td style="text-align:right">
-                           <a href="@{Permissions.edit(permission.id)}">Edit</a>&nbsp;
-                           <a href="@{Permissions.delete(permission.id)}" onclick="if (!confirm('Are you sure you want to delete this record?')) return false;">Delete</a>
-                       </td>
-                    </tr>
-                #{/list}
+            <tbody id="items">
+               
             </tbody>
         </table>
-      #{/if}
-      #{else}
-          No data inserted.
-      #{/else}  
     </div>
     <div class="bendl"></div>
     <div class="bendr"></div>
     
-    <script>
-        $(document).ready(function() {
-            $('#action').attr('style','width:100px');
-        });
-    </script>
 </div>
+
+<script type="text/javascript">
+    var search = function(event, element) {
+        var keyCode = ('which' in event) ? event.which : event.keyCode;
+        
+        if (keyCode == 27) {
+            element.value = '';
+        }
+        
+        if (keyCode == 13 && element.value != '') {
+            var url = '@{Permissions.filter()}?value=' + element.value;
+            $.ajax({
+                url: url,
+                success: function(response) {
+                    var items = $('#items');
+                    items.html('');
+                    $.each(response.elements, function(i, item) {
+                        var editUrl = '@{Permissions.edit()}?id=' + item.id,
+                            deleteUrl = '@{Permissions.delete()}?id=' + item.id,
+                            content = '<tr><td>' + item.group + '</td>' +
+                                 '<td>' + item.repository + '</td>' +
+                                 '<td>' + item.root + '</td>' +
+                                 '<td>' + item.trunk + '</td>' +
+                                 '<td>' + item.branches + '</td>' +
+                                 '<td style="text-align:right">' +
+                                 '    <a href="' + editUrl + '">Edit</a>&nbsp' +
+                                 '    <a href="' + deleteUrl + '" onclick="if (!confirm(\'Are you sure you want to delete this record?\')) return false;">Delete</a>' +
+                                 '</td></tr>';
+                        items.append(content);
+                    });
+                }
+            });
+        }
+    }
+</script>

@@ -18,14 +18,13 @@
          <input id="txtSearch" type="text" name="search" class="big-text" onkeydown="search(event, this)">
       </p>
       
-      <table id="result" cellpadding="0" cellspacing="0" width="100%">
+      <table id="result" cellpadding="0" cellspacing="0" width="100%" class="hide">
           <thead>
               <tr>
-                  <th width="10" class="header" style="cursor: pointer;">ID</th>
-                  <th class="header" style="cursor: pointer;">Name</th>
+                  <th class="header">Name</th>
                   <th width="120" class="header">Category</th>
                   <th width="100" class="header">Is Created?</th>
-                  <th width="100"></th>
+                  <th class="action"></th>
               </tr>
           </thead>
           <tbody id="items">
@@ -55,8 +54,7 @@
                     $.each(response.elements, function(i, item) {
                         var editUrl = '@{Repositories.edit()}?id=' + item.id,
                             deleteUrl = '@{Repositories.delete()}?id=' + item.id,
-                            content = '<tr><td>' + item.id + '</td>' +
-                                 '<td><a href="http://svn.dsv.bradseg.com.br/svn/' + item.name + '/trunk">' + item.name + '</a></td>' +
+                            content = '<tr><td><a href="http://svn.dsv.bradseg.com.br/svn/' + item.name + '/trunk">' + item.name + '</a></td>' +
                                  '<td>' + item.category + '</td>' +
                                  '<td>' + item.is_created + '</td>' +
                                  '<td style="text-align:right">' +
@@ -65,6 +63,7 @@
                                  '</td></tr>';
                         items.append(content);
                     });
+                    
                 }
             });
         }

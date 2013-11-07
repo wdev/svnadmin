@@ -1030,3 +1030,5 @@ label {
     text-align: right;
     width: auto;
 }
+
+th.action { width: 100px; }

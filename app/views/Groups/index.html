@@ -20,10 +20,9 @@
         <table id="result" cellpadding="0" cellspacing="0" width="100%">
             <thead>
                 <tr>
-                    <th width="10" class="header" style="cursor: pointer;">ID</th>
                     <th class="header" style="cursor: pointer;">Name</th>
                     <th class="header" style="cursor: pointer;">Users</th>
-                    <th width="100"></th>
+                    <th class="action"></th>
                 </tr>
             </thead>
             <tbody id="items">
@@ -53,8 +52,7 @@
                     $.each(response.elements, function(i, item) {
                         var editUrl = '@{Groups.edit()}?id=' + item.id,
                             deleteUrl = '@{Groups.delete()}?id=' + item.id,
-                            content = '<tr><td>' + item.id + '</td>' +
-                                 '<td>' + item.name + '</td>' +
+                            content = '<tr><td>' + item.name + '</td>' +
                                  '<td>' + item.users + '</td>' +
                                  '<td style="text-align:right">' +
                                  '    <a href="' + editUrl + '">Edit</a>&nbsp' +

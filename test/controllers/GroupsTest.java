@@ -30,7 +30,7 @@ public class GroupsTest extends FunctionalTest {
         Response response = GET("/groups/filter?value=" + group.name);
         
         assertEquals("application/json; charset=utf-8", response.contentType);
-        assertEquals("{\"elements\":[{\"id\":4,\"name\":\"gsin_gestaodesinistros\",\"users\":\"L568431 L966259 \"}]}", response.out.toString());
+        assertEquals("{\"elements\":[{\"id\":74,\"name\":\"gsin_gestaodesinistros\",\"users\":\"L568431 L966259 \"}]}", response.out.toString());
     }
     
     @Test

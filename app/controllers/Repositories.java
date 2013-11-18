@@ -25,6 +25,7 @@ public class Repositories extends AbstractController {
     
     public static void filter(String value) {
         if (StringUtils.isNotBlank(value)) {
+            value = value.replace("-", "_").replace(" ", "");
             JsonArray array = new JsonArray();
             final String name = "%" + value + "%"; 
             List<Repository> repositories = Repository.find("byNameLike", name).fetch();

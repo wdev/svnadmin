@@ -32,7 +32,7 @@ public class PermissionsTest extends FunctionalTest {
         Response response = GET("/permissions/filter?value=" + group.name);
         
         assertEquals("application/json; charset=utf-8", response.contentType);
-        assertEquals("{\"elements\":[{\"id\":2,\"root\":\"r\",\"trunk\":\"rw\",\"group\":\"paol_admin\",\"repository\":\"paol_admin\"}]}", response.out.toString());
+        assertEquals("{\"elements\":[{\"id\":93,\"root\":\"r\",\"trunk\":\"rw\",\"branches\":\"\",\"tags\":\"\",\"group\":\"paol_admin\",\"repository\":\"paol_admin\"}]}", response.out.toString());
     }
     
     @Test

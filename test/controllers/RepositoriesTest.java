@@ -42,7 +42,7 @@ public class RepositoriesTest extends FunctionalTest {
         Response response = GET("/repositories/filter?value=" + repository.name);
         
         assertEquals("application/json; charset=utf-8", response.contentType);
-        assertEquals("{\"elements\":[{\"id\":8,\"name\":\"paol_admin\",\"category\":\"\",\"is_created\":false}]}", response.out.toString());
+        assertEquals("{\"elements\":[{\"id\":96,\"name\":\"paol_admin\",\"category\":\"\",\"is_created\":false}]}", response.out.toString());
     }
     
     @Test
